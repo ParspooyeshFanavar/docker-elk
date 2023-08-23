@@ -34,7 +34,6 @@ jobs:
           -f extensions/fleet/fleet-compose.yml
           -f extensions/fleet/agent-apmserver-compose.yml
           -f extensions/metricbeat/metricbeat-compose.yml
-          -f extensions/filebeat/filebeat-compose.yml
           -f extensions/heartbeat/heartbeat-compose.yml
           -f extensions/enterprise-search/enterprise-search-compose.yml
           build
@@ -52,7 +51,6 @@ jobs:
                  -e 's/\(LOGSTASH_INTERNAL_PASSWORD=\)'\''changeme'\''/\1testpasswd/g' \
                  -e 's/\(KIBANA_SYSTEM_PASSWORD=\)'\''changeme'\''/\1testpasswd/g' \
                  -e 's/\(METRICBEAT_INTERNAL_PASSWORD=\)'\'\''/\1testpasswd/g' \
-                 -e 's/\(FILEBEAT_INTERNAL_PASSWORD=\)'\'\''/\1testpasswd/g' \
                  -e 's/\(HEARTBEAT_INTERNAL_PASSWORD=\)'\'\''/\1testpasswd/g' \
                  -e 's/\(MONITORING_INTERNAL_PASSWORD=\)'\'\''/\1testpasswd/g' \
                  -e 's/\(BEATS_SYSTEM_PASSWORD=\)'\'\''/\1testpasswd/g' .env
@@ -123,14 +121,6 @@ jobs:
           docker compose -f docker-compose.yml -f extensions/metricbeat/metricbeat-compose.yml up --remove-orphans -d metricbeat
           .github/workflows/scripts/run-tests-metricbeat.sh
 
-      #
-      # Filebeat
-      #
-
-      - name: Execute Filebeat test suite
-        run: |
-          docker compose -f docker-compose.yml -f extensions/filebeat/filebeat-compose.yml up --remove-orphans -d filebeat
-          .github/workflows/scripts/run-tests-filebeat.sh
 
       #
       # Heartbeat
@@ -180,7 +170,6 @@ jobs:
           -f extensions/fleet/fleet-compose.yml \
           -f extensions/fleet/agent-apmserver-compose.yml \
           -f extensions/metricbeat/metricbeat-compose.yml \
-          -f extensions/filebeat/filebeat-compose.yml \
           -f extensions/heartbeat/heartbeat-compose.yml \
           -f extensions/enterprise-search/enterprise-search-compose.yml \
           ps >"$debug_data_dir"/docker_ps.log
@@ -191,7 +180,6 @@ jobs:
           -f extensions/fleet/fleet-compose.yml \
           -f extensions/fleet/agent-apmserver-compose.yml \
           -f extensions/metricbeat/metricbeat-compose.yml \
-          -f extensions/filebeat/filebeat-compose.yml \
           -f extensions/heartbeat/heartbeat-compose.yml \
           -f extensions/enterprise-search/enterprise-search-compose.yml \
           logs >"$debug_data_dir"/docker_logs.log
@@ -220,7 +208,6 @@ jobs:
           -f extensions/fleet/fleet-compose.yml
           -f extensions/fleet/agent-apmserver-compose.yml
           -f extensions/metricbeat/metricbeat-compose.yml
-          -f extensions/filebeat/filebeat-compose.yml
           -f extensions/heartbeat/heartbeat-compose.yml
           -f extensions/enterprise-search/enterprise-search-compose.yml
           down -v
