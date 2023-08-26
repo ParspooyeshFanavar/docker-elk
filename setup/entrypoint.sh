@@ -111,6 +111,7 @@ for user in "${!users_passwords[@]}"; do
 		fi
 
 		sublog 'User does not exist, creating'
+		echo create_user "$user" "${users_passwords[$user]}" "${users_roles[$user]}"
 		create_user "$user" "${users_passwords[$user]}" "${users_roles[$user]}"
 	fi
 done
