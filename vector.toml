@@ -1,0 +1,67 @@
+# Set global options
+data_dir = "/var/lib/vector"
+
+# https://vector.dev/docs/reference/configuration/sources/socket/
+[sources.udp_input]
+type = "socket"
+address = "0.0.0.0:5958"
+mode = "udp"
+# path = "/udp-log"
+decoding.codec = "bytes"
+# vector   | 2023-08-27T05:17:03.655425Z ERROR vector::cli: Configuration error.
+#  error=unknown field `path`, expected one of
+# `address`, `max_length`, `host_key`, `port_key`, `receive_buffer_bytes`, `framing`, `decoding`, `log_namespace`
+
+
+[transforms.json_parser]
+type = "remap"
+inputs = ["udp_input"]
+drop_on_error = false
+source = '''
+parsed, err = parse_json(.message)
+if err == null {
+    . |= object!(parsed)
+} else {
+    log("Failed to parse json from udp_input", level: "error")
+}
+'''
+
+# grok_parser transform is rewoved
+# [transforms.log_parser]
+# type   = "grok_parser"
+# inputs = ["json_parser"]
+# pattern = '%{IPORHOST:client} - %{USERNAME:user} \[%{HTTPDATE:timestamp}\] \"%{WORD:verb} %{NOTSPACE:path} HTTP/%{NUMBER}\" %{INT:status} %{NUMBER:bytes} \"%{DATA:referer}\" \"%{DATA:user_agent}\"'
+# types.status = "int"
+# types.bytes = "int"
+# types.timestamp = "timestamp|%d/%b/%Y:%H:%M:%S %z"
+
+# [transforms.log_parser]
+# type = "remap"
+# inputs = ["json_parser"]
+# drop_on_error = false
+# source = '''
+# . |= parse_grok!(.message, "%{TIMESTAMP_ISO8601:timestamp} %{LOGLEVEL:level} %{GREEDYDATA:message}")
+# .timestamp = parse_timestamp!(.timestamp , format: "%+")
+# '''
+
+# https://vector.dev/docs/reference/configuration/sinks/console/
+[sinks.console_output]
+type = "console"
+inputs = [ "json_parser" ]
+encoding.codec = "logfmt"
+
+# https://vector.dev/docs/reference/configuration/sinks/elasticsearch/
+[sinks.elastic_output]
+type = "elasticsearch"
+inputs = ["json_parser"]
+healthcheck = false
+api_version = "v7"
+endpoints = ["http://elasticsearch:9200"]
+#auth.user = "${VECTOR_ELASTIC_USERNAME}"
+#auth.password = "${VECTOR_ELASTIC_PASSWORD}"
+auth.user = "logstash_internal"
+auth.password = "${LOGSTASH_INTERNAL_PASSWORD}"
+auth.strategy = "basic"
+mode = "data_stream"
+
+

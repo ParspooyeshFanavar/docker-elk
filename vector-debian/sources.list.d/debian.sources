@@ -1,0 +1,6 @@
+Types: deb
+URIs: http://archive.debian.petiak.ir/debian
+Suites: bookworm
+Components: main
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+

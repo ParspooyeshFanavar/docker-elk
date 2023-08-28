@@ -5,3 +5,10 @@
 http.host: 0.0.0.0
 
 node.name: logstash
+
+# xpack.management.enabled: true
+# xpack.management.elasticsearch.hosts: "http://elasticsearch:9200/"
+# xpack.management.elasticsearch.username: "logstash_internal"
+# xpack.management.elasticsearch.password: "${LOGSTASH_INTERNAL_PASSWORD}"
+# xpack.management.logstash.poll_interval: 5s
+# xpack.management.pipeline.id: ["apache", "cloudwatch_logs"]
