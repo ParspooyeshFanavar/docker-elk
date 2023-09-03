@@ -98,10 +98,10 @@ services:
       - 5958:5958/udp
     environment:
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
-      LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
-      VECTOR_LOG: debug
+      VECTOR_ELASTIC_USERNAME: ${VECTOR_ELASTIC_USERNAME:-}
+      VECTOR_ELASTIC_PASSWORD: ${VECTOR_ELASTIC_PASSWORD:-}
+      VECTOR_LOG: ${VECTOR_LOG:-}
       #    trace, debug, info, warn, error
-      # VECTOR_INTERNAL_PASSWORD: ${VECTOR_INTERNAL_PASSWORD:-}
     volumes: 
       - $PWD/vector.toml:/etc/vector/vector.toml:ro
       - $PWD/vector-debian/sources.list.d:/etc/apt/sources.list.d/:ro
