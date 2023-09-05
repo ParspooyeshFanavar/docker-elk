@@ -1,0 +1,3 @@
+docker compose down vector
+docker compose up vector -d
+
