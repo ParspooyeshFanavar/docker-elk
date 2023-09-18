@@ -95,6 +95,7 @@ services:
       context: vector-debian
     ports:
       - 8888:8888
+      - 8686:8686
       - 5958:5958/udp
     environment:
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}

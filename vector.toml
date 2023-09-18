@@ -1,6 +1,11 @@
 # Set global options
 data_dir = "/var/lib/vector"
 
+# https://vector.dev/docs/reference/api/
+[api]
+enabled = true
+address = "0.0.0.0:8686" # optional. Change IP/port if required
+
 # https://vector.dev/docs/reference/configuration/sources/socket/
 [sources.udp_input]
 type = "socket"
