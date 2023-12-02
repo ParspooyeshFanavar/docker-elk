@@ -1,3 +1,6 @@
+init:
+	docker-compose up setup
+
 up:
 	docker-compose up -d
 
