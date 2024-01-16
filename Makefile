@@ -4,6 +4,9 @@ init:
 up:
 	docker-compose up -d
 
+up-fg:
+	docker-compose up
+
 build:
 	docker-compose up -d --build
 

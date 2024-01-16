@@ -40,28 +40,24 @@ services:
     networks:
       - elk
     depends_on:
-      - elasticsearch
+      - opensearch
 
-  elasticsearch:
+  opensearch:
     build:
-      context: elasticsearch/
-      args:
-        ELASTIC_VERSION: ${ELASTIC_VERSION}
+      context: opensearch/
     volumes:
-      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z
-      - elasticsearch:/usr/share/elasticsearch/data:Z
+      - ./opensearch/config/opensearch.yml:/usr/share/opensearch/config/opensearch.yml:ro,Z
+      - opensearch:/usr/share/opensearch/data:Z
     ports:
       - 9200:9200
       - 9300:9300
     environment:
-      node.name: elasticsearch
+      node.name: opensearch
       ES_JAVA_OPTS: -Xms512m -Xmx512m
       # Bootstrap password.
       # Used to initialize the keystore during the initial startup of
-      # Elasticsearch. Ignored on subsequent runs.
-      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
-      # Use single node discovery in order to disable production mode and avoid bootstrap checks.
-      # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
+      # opensearch. Ignored on subsequent runs.
+      OPENSEARCH_PASSWORD: ${ELASTIC_PASSWORD:-}
       discovery.type: single-node
     networks:
       - elk
@@ -109,7 +105,7 @@ services:
     networks:
       - elk
     depends_on:
-      - elasticsearch
+      - opensearch
 
   kibana:
     build:
@@ -125,7 +121,7 @@ services:
     networks:
       - elk
     depends_on:
-      - elasticsearch
+      - opensearch
     restart: unless-stopped
 
 networks:
@@ -134,3 +130,4 @@ networks:
 
 volumes:
   elasticsearch:
+  opensearch:
